@@ -1,5 +1,10 @@
 # ![banner](./banner.png)
 
+![GitHub](https://img.shields.io/github/license/Hacktix/gbctv?style=for-the-badge)
+![GitHub Release Date](https://img.shields.io/github/release-date/Hacktix/gbctv?label=Latest%20Release&style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/Hacktix/gbctv?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Hacktix/gbctv?style=for-the-badge)
+
 ## What's that?
 GBCTV is a program which uses the Gameboy Colors infrared interface in order to record and play back IR signals. In essence - this program turns your Gameboy Color into a crappy TV remote!
 

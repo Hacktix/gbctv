@@ -23,9 +23,9 @@ Pressing the B button (while no recording is in progress) starts playback of the
 **Note:** Pressing B before recording any signals will end up sending random signals and may cause unintended side effects. I would recommend against doing this.
 
 ## How does it work?
-As soon as the A button is pressed, the program waits for an IR signal. Once it receives one it starts dumping the value of the IR register into RAM every few microseconds. The recording initiation mechanism of waiting for a "high" signal isn't an optimal solution as it's triggered by interference as well, but it works fine most of the time and eliminates the need for the user to synchronize button presses down to an accuracy of around 2 milliseconds.
+As soon as the A button is pressed, the program waits for an IR signal. Once it receives one it starts dumping the value of the IR register into SRAM (bank number dependant on the selected profile number) every few microseconds. The recording initiation mechanism of waiting for a "high" signal isn't an optimal solution as it's triggered by interference as well, but it works fine most of the time and eliminates the need for the user to synchronize button presses down to an accuracy of around 2 milliseconds.
 
-Due to the high sample rate required to record IR pulses that only last up to 10 microseconds, RAM is the limiting factor here. The 8KB of WRAM the Gameboy comes with is enough to record the aforementioned 2 milliseconds of signals, which should be good enough for most remotes, but may not suffice for every purpose imaginable.
+Due to the high sample rate required to record IR pulses that only last up to 10 microseconds, RAM is the limiting factor here. The 8KB of SRAM banks is enough to record the aforementioned 2 milliseconds of signals, which should be good enough for most remotes, but may not suffice for every purpose imaginable.
 
 ## Plans for the future?
-Addition of save-able "signal profiles" using cartridge RAM is planned and a feature which allows recording longer signals (~5ms instead of ~2ms) is in consideration, but not decided on yet. Of course, bugfixes and small QoL updates may be pushed at any time.
+A feature which allows recording longer signals (~5ms instead of ~2ms) is in consideration, but not decided on yet. Of course, bugfixes and small QoL updates may be pushed at any time.

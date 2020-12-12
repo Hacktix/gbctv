@@ -7,3 +7,4 @@ SECTION "Strings", ROM0
 strTitle: db "Welcome to GBCTV", 0
 strPressA: db "(A) Record Signal", 0
 strPressB: db "(B) Replay Signal", 0
+strProfile: db "Profile: < 0 >", 0

@@ -61,6 +61,9 @@ InitMenu::
     ld de, strPressB
     ld hl, $98e1
     call Strcpy
+    ld de, strProfile
+    ld hl, $9963
+    call Strcpy
 
     ; Set palettes in VRAM1
     ld a, 1
@@ -76,6 +79,10 @@ InitMenu::
     ld [hli], a
     xor a
     ld [rVBK], a
+
+    ; Initialize Profile Selection
+    ldh [hSelectedProfile], a
+    ldh [hProfileCooldown], a
 
     ret
 

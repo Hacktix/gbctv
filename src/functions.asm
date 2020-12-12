@@ -16,3 +16,12 @@ Strcpy::
     ld [hli], a
     inc de
     jr Strcpy
+
+NibbleToASCII:
+    and $0f
+    cp 10
+    jr c, .digit
+    add a, "A" - 10 - "0"
+.digit
+    add a, "0"
+    ret

@@ -5,6 +5,7 @@ INCLUDE "src/init.asm"
 INCLUDE "src/functions.asm"
 INCLUDE "src/rec.asm"
 INCLUDE "src/play.asm"
+INCLUDE "src/profile.asm"
 
 SECTION "Vectors", ROM0[$0]
     ds $40 - @
@@ -39,9 +40,10 @@ Init::
     ; Initialize Menu Text
     call InitMenu
 
-    ; Initialize Joypad
-    ld a, %11011111
-    ld [rP1], a
+    ; Enable SRAM
+    ld a, $0a
+    ld hl, $0000
+    ld [hl], a
 
     ; Enable LCD
     ld a, %10000001
@@ -61,10 +63,40 @@ MenuLoop:
     ld a, "B"
     ld [hl], a
 
+    ; Check A or B presses
+    ld a, %11011111
+    ld [rP1], a
     ld a, [rP1]
     bit 0, a
     jp z, StartRecording
     bit 1, a
     jp z, StartPlayback
+
+    ; Check Profile Switch Cooldown
+    ldh a, [hProfileCooldown]
+    and a
+    jr z, .noCooldown
+    dec a
+    ldh [hProfileCooldown], a
+    jr .noLeft
+.noCooldown
+
+    ; Check Left or Right presses
+    ld a, %11101111
+    ld [rP1], a
+    ld a, [rP1]
+    bit 0, a
+    jp nz, .noRight
+    ld a, $01
+    ld b, a
+    call SwitchProfile
+    jr .noLeft
+.noRight
+    bit 1, a
+    jr nz, .noLeft
+    ld a, $ff
+    ld b, a
+    call SwitchProfile
+.noLeft
 
     jr MenuLoop

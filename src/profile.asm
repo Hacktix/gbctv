@@ -14,6 +14,10 @@ SwitchProfile::
 .noOverflow
     ldh [hSelectedProfile], a
 
+    ; Switch RAM Bank
+    ld hl, $4000
+    ld [hl], a
+
     ; Print new number to screen
     call NibbleToASCII
     ld hl, $996e

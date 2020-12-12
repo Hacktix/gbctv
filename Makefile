@@ -9,7 +9,7 @@ RM_F = rm -f
 
 ASFLAGS = -h
 LDFLAGS = -t -w -n gbctv.sym
-FIXFLAGS = -v -p $(PADVAL) -t $(NAME) -C
+FIXFLAGS = -v -p $(PADVAL) -t $(NAME) -C -m 0x1b -r 0x04
 
 gbctv.gb: gbctv.o
 	$(RGBLINK) $(LDFLAGS) -o $@ $^

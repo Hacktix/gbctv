@@ -1,4 +1,4 @@
-SECTION "WRAM", WRAM0
+SECTION "SRAM", SRAM
 wRecordingBase: db
 
 SECTION "HRAM", HRAM

@@ -25,7 +25,7 @@ StartRecording::
     ld hl, wRecordingBase         ; Pre-load RAM pointer
     ld a, $56
     ld c, a                       ; Load pointer for LDH [$ff00 + C]
-    ld a, $e0
+    ld a, $c0
     ld b, a                       ; Pre-load CP value for upper RAM boundary
                                   ; Higher performance due to register-based CP
 

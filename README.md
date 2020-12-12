@@ -11,13 +11,14 @@ GBCTV is a program which uses the Gameboy Colors infrared interface in order to 
 ## How do I use it?
 You'll need to use a flashcart in order to get the ROM loaded on your actual device, as running it on an emulator probably wouldn't be very useful. You can grab the newest release [here](https://github.com/Hacktix/gbctv/releases) and simply just start it up.
 
-### Recording Signals
-Press the A button once prompted to start an IR recording. The program waits for an incoming IR signal before starting the recording. If the small recording-dot icon disappears before any signal was provided there was most likely some sort of interference. In this case, just hit A again until it records the signal properly.
+### Recording Profiles
+GBCTV offers a system of "recording profiles". These profiles work as sort of "slots" into which signals can be recorded. When no recording is in progress, the profile number can be switched by pressing left and right on the D-Pad.
 
-**Note:** Keep in mind that (currently) starting a new recording automatically overwrites any previous recordings.
+### Recording Signals
+Press the A button once prompted to start an IR recording. The program waits for an incoming IR signal before starting the recording. If the small recording-dot icon disappears before any signal was provided there was most likely some sort of interference. In this case, just hit A again until it records the signal properly. The recording overwrites anything else stored in the currently selected profile.
 
 ### Playing Back Signals
-Pressing the B button (while no recording is in progress) starts playback of the last stored signal. Holding down the B button loops this signal over and over.
+Pressing the B button (while no recording is in progress) starts playback of the signal stored in the currently selected Recording Profile. Holding down the B button loops this signal over and over.
 
 **Note:** Pressing B before recording any signals will end up sending random signals and may cause unintended side effects. I would recommend against doing this.
 

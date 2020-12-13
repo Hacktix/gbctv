@@ -5,26 +5,26 @@ SwitchProfile::
     add b
     cp $ff
     jr nz, .noUnderflow
-    ld a, $0f
+    ld a, MAX_PROFILE_NO
     jr .noOverflow
 .noUnderflow
-    cp $10
+    cp MAX_PROFILE_NO+1
     jr nz, .noOverflow
     xor a
 .noOverflow
     ldh [hSelectedProfile], a
 
     ; Switch RAM Bank
-    ld hl, $4000
+    ld hl, rRAMB
     ld [hl], a
 
     ; Print new number to screen
     call NibbleToASCII
-    ld hl, $996e
+    ld hl, ADDR_SYMBOL_PNUM
     ld [hl], a
 
     ; Update Cooldown
-    ld a, $0a
+    ld a, PSWITCH_COOLDOWN
     ldh [hProfileCooldown], a
 
     ret

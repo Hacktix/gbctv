@@ -4,12 +4,12 @@ StartRecording::
     di
 
     ; Set recording icon
-    ld hl, $98a2
-    ld a, $1f
+    ld hl, ADDR_SYMBOL_A
+    ld a, REC_SYMBOL_TILENO
     ld [hl], a
 
     ; Initialize IR reading
-    ld a, %11000000
+    ld a, RPF_ENREAD
     ld [rRP], a
 
     ; Wait for first signal to arrive
@@ -19,13 +19,13 @@ StartRecording::
     jp nz, .recordWaitLoop
 
     ; Initialize system for high-speed IR reading
-    ld a, 1
+    ld a, KEY1F_PREPARE
     ld [rKEY1], a
     stop                          ; Double-speed mode
     ld hl, wRecordingBase         ; Pre-load RAM pointer
-    ld a, $56
+    ld a, LOW(rRP)
     ld c, a                       ; Load pointer for LDH [$ff00 + C]
-    ld a, $c0
+    ld a, HIGH(_RAM)
     ld b, a                       ; Pre-load CP value for upper RAM boundary
                                   ; Higher performance due to register-based CP
 
@@ -38,7 +38,7 @@ StartRecording::
     jr nz, .recordLoop
 
     ; Stop double speed mode
-    ld a, 1
+    ld a, KEY1F_PREPARE
     ld [rKEY1], a
     stop
 
@@ -56,8 +56,8 @@ PostProcessRecording::
 .postProcessingLoop
     ld a, [hl]
     xor $ff
+    and RPF_DATAIN
     rra
-    and $01
     ld [hli], a
 
     ld a, h

@@ -1,4 +1,5 @@
 INCLUDE "inc/hardware.inc"
+INCLUDE "inc/gbctv.inc"
 INCLUDE "src/ram.asm"
 INCLUDE "src/data.asm"
 INCLUDE "src/init.asm"
@@ -41,12 +42,12 @@ Init::
     call InitMenu
 
     ; Enable SRAM
-    ld a, $0a
-    ld hl, $0000
+    ld a, CART_SRAM_ENABLE
+    ld hl, rRAMG
     ld [hl], a
 
     ; Enable LCD
-    ld a, %10000001
+    ld a, LCDCF_ON | LCDCF_BGON
     ld [rLCDC], a
 
     ; Enable Interrupts
@@ -56,15 +57,15 @@ MenuLoop:
     halt
 
     ; Reset Buttons
-    ld hl, $98a2
+    ld hl, ADDR_SYMBOL_A
     ld a, "A"
     ld [hl], a
-    ld hl, $98e2
+    ld hl, ADDR_SYMBOL_B
     ld a, "B"
     ld [hl], a
 
     ; Check A or B presses
-    ld a, %11011111
+    ld a, P1F_GET_BTN
     ld [rP1], a
     ld a, [rP1]
     bit 0, a
@@ -75,27 +76,29 @@ MenuLoop:
     ; Check Profile Switch Cooldown
     ldh a, [hProfileCooldown]
     and a
-    jr z, .noCooldown
+    jr z, .noCooldown            ; Go to D-Pad checking if zero
     dec a
     ldh [hProfileCooldown], a
     jr .noLeft
 .noCooldown
 
     ; Check Left or Right presses
-    ld a, %11101111
+    ld a, P1F_GET_DPAD
     ld [rP1], a
     ld a, [rP1]
+
     bit 0, a
-    jp nz, .noRight
-    ld a, $01
-    ld b, a
+    jp nz, .noRight        ; If right D-Pad was pressed
+    ld a, $01              ; Load value $01 into B
+    ld b, a                ; To be added to profile number
     call SwitchProfile
-    jr .noLeft
+    jr .noLeft             ; Skip check for left D-Pad
 .noRight
+
     bit 1, a
-    jr nz, .noLeft
-    ld a, $ff
-    ld b, a
+    jr nz, .noLeft         ; If left D-Pad was pressed
+    ld a, $ff              ; Load value $FF into B
+    ld b, a                ; To be added to profile number
     call SwitchProfile
 .noLeft
 

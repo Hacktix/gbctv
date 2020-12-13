@@ -1,7 +1,7 @@
 SECTION "Initialization", ROM0
 InitPalettes::
     ; Initializing BGP0
-    ld a, %10000000
+    ld a, BCPSF_AUTOINC
     ld [rBCPS], a
     xor a
     ld [rBCPD], a
@@ -53,26 +53,26 @@ InitPalettes::
 InitMenu::
     ; Write Strings to screen
     ld de, strTitle
-    ld hl, $9822
+    ld hl, ADDR_TITLE_LABEL
     call Strcpy
     ld de, strPressA
-    ld hl, $98a1
+    ld hl, ADDR_REC_LABEL
     call Strcpy
     ld de, strPressB
-    ld hl, $98e1
+    ld hl, ADDR_PLAY_LABEL
     call Strcpy
     ld de, strProfile
-    ld hl, $9963
+    ld hl, ADDR_PROFILE_LABEL
     call Strcpy
 
     ; Set palettes in VRAM1
     ld a, 1
     ld [rVBK], a
-    ld hl, $98a1
+    ld hl, ADDR_REC_LABEL
     ld [hli], a
     ld [hli], a
     ld [hli], a
-    ld hl, $98e1
+    ld hl, ADDR_PLAY_LABEL
     ld a, 2
     ld [hli], a
     ld [hli], a

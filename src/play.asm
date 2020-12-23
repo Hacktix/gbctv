@@ -33,6 +33,10 @@ StartPlayback::
     ld [rKEY1], a
     stop
 
+    ; Disable IR Read & Write
+    xor a
+    ld [rRP], a
+
     ; Re-enable interrupts and return to menu loop
     call InitInterrupts
     jp MenuLoop

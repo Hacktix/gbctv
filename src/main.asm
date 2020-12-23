@@ -45,6 +45,10 @@ Init::
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
 
+    ; Shut down sound
+    xor a
+    ld [rNR52], a
+
     ; Check if running on CGB, show error if not
     ld a, [hInitialRegA]
     cp BOOTUP_A_CGB
@@ -144,4 +148,13 @@ LockupNonCGB:
     ld [rLCDC], a
 
     ; Lock up
+    xor a
+    ldh [rIF], a
+    ldh [rIE], a
+    ei
+    nop
+    halt
+    nop
+
+    ; Non-power-saving lockup in case emulators break here
     jr @

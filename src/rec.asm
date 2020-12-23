@@ -47,6 +47,10 @@ StartRecording::
     ld [rKEY1], a
     stop
 
+    ; Disable IR Read & Write
+    xor a
+    ld [rRP], a
+
     ; Post-process recorded inputs
     call PostProcessRecording
 

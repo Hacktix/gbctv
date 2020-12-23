@@ -22,6 +22,9 @@ SECTION "Test", ROM0[$100]
     ds $150 - @
 
 Init::
+    ; Load initial value of A into hInitialRegA
+    ldh [hInitialRegA], a
+
     ; Wait for VBlank, disable LCD
 	ldh a, [rLY]
 	cp SCRN_Y
@@ -29,14 +32,21 @@ Init::
     xor a
     ld [rLCDC], a
 
-    ; Initialize Palettes
-    call InitPalettes
-
     ; Load font tiles
     ld hl, $9000
     ld de, FontTiles
     ld bc, FontTilesEnd - FontTiles
     call Memcpy
+
+    ; Check if running on CGB, show error if not
+    ld a, [hInitialRegA]
+    cp BOOTUP_A_CGB
+    jr z, .isCGB
+    jp LockupNonCGB
+.isCGB
+
+    ; Initialize Palettes
+    call InitPalettes
 
     ; Initialize Menu Text
     call InitMenu
@@ -103,3 +113,21 @@ MenuLoop:
 .noLeft
 
     jr MenuLoop
+
+
+
+LockupNonCGB:
+    ; Print error message to screen
+    ld de, strNonCGB_L1
+    ld hl, ADDR_NON_CGB_LABEL_L1
+    call Strcpy
+    ld de, strNonCGB_L2
+    ld hl, ADDR_NON_CGB_LABEL_L2
+    call Strcpy
+
+    ; Enable LCD
+    ld a, LCDCF_ON | LCDCF_BGON
+    ld [rLCDC], a
+
+    ; Lock up
+    jr @

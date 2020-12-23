@@ -1,4 +1,8 @@
 SECTION "Functions", ROM0
+;------------------------------------------------------------------------
+; Copies BC bytes to a memory region starting at HL from a memory
+; region starting at DE.
+;------------------------------------------------------------------------
 Memcpy::
     ld a, [de]
     ld [hli], a
@@ -9,6 +13,10 @@ Memcpy::
     jr nz, Memcpy
     ret
 
+;------------------------------------------------------------------------
+; Copies a null-terminated string pointed to by DE to HL (excluding
+; the terminating zero-byte)
+;------------------------------------------------------------------------
 Strcpy::
     ld a, [de]
     and a
@@ -17,6 +25,9 @@ Strcpy::
     inc de
     jr Strcpy
 
+;------------------------------------------------------------------------
+; Converts the lower nibble of A to an ASCII value and stores it in A.
+;------------------------------------------------------------------------
 NibbleToASCII:
     and $0f
     cp 10

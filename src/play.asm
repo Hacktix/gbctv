@@ -1,4 +1,8 @@
 SECTION "Playback", ROM0
+
+;------------------------------------------------------------------------
+; Starts playback of the signal data stored in the selected SRAM bank.
+;------------------------------------------------------------------------
 StartPlayback::
     ; Set playback icon
     ld hl, ADDR_SYMBOL_B
@@ -29,7 +33,6 @@ StartPlayback::
     ld [rKEY1], a
     stop
 
-    ; Re-enable interrupts
+    ; Re-enable interrupts and return to menu loop
     call InitInterrupts
-
     jp MenuLoop

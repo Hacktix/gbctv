@@ -10,7 +10,10 @@ INCLUDE "src/profile.asm"
 
 SECTION "Vectors", ROM0[$0]
     ds $40 - @
-
+;------------------------------------------------------------------------
+; Vector being jumped to for VBlank Interrupts. Only returns while
+; re-enabling interrupts, as it's only used to HALT between frames.
+;------------------------------------------------------------------------
 VBlankVector::
     reti
 
@@ -21,6 +24,10 @@ SECTION "Test", ROM0[$100]
     jp Init
     ds $150 - @
 
+;------------------------------------------------------------------------
+; Initializes memory, VRAM and SRAM and falls through to the
+; main menu loop routine.
+;------------------------------------------------------------------------
 Init::
     ; Load initial value of A into hInitialRegA
     ldh [hInitialRegA], a
@@ -63,7 +70,11 @@ Init::
     ; Enable Interrupts
     call InitInterrupts
 
-MenuLoop:
+;------------------------------------------------------------------------
+; Routine which handles input every frame and calls the corresponding
+; subroutines if required.
+;------------------------------------------------------------------------
+MenuLoop::
     halt
 
     ; Reset Buttons
@@ -114,8 +125,11 @@ MenuLoop:
 
     jr MenuLoop
 
-
-
+;------------------------------------------------------------------------
+; Should be called when the A register is not $11 on startup, as
+; that would suggest it's not running on a Gameboy Color. Prints an
+; error message to the screen and locks up.
+;------------------------------------------------------------------------
 LockupNonCGB:
     ; Print error message to screen
     ld de, strNonCGB_L1

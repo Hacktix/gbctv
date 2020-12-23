@@ -1,4 +1,9 @@
 SECTION "Initialization", ROM0
+
+;------------------------------------------------------------------------
+; Initializes the CGB color palette.
+; TODO: Optimize this.
+;------------------------------------------------------------------------
 InitPalettes::
     ; Initializing BGP0
     ld a, BCPSF_AUTOINC
@@ -50,6 +55,10 @@ InitPalettes::
 
     ret
 
+;------------------------------------------------------------------------
+; Initializes the program for displaying main menu by writing strings,
+; to VRAM0, setting palettes in VRAM1 and initializing HRAM variables.
+;------------------------------------------------------------------------
 InitMenu::
     ; Write Strings to screen
     ld de, strTitle
@@ -86,10 +95,14 @@ InitMenu::
 
     ret
 
+;------------------------------------------------------------------------
+; Clears the IF register to clear any pending interrupts and enables
+; VBlank interrupts.
+;------------------------------------------------------------------------
 InitInterrupts::
     xor a
     ld [rIF], a
-    ld a, 1
+    ld a, IEF_VBLANK
     ld [rIE], a
     ei 
     ret
